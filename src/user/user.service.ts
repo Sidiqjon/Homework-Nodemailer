@@ -1,26 +1,40 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class UserService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(private readonly prisma: PrismaService) {}
+
+  async findAll() {
+    return this.prisma.user.findMany();
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async myInfo(userId: number) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      include: { sessions: true },
+    });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async sessions(userId: number) {
+    return this.prisma.session.findMany({
+      where: { userId },
+    });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async deleteSession(userId: number, sessionId: number) {
+    const session = await this.prisma.session.findUnique({
+      where: { id: sessionId },
+    });
+    if (!session || session.userId !== userId) {
+      throw new NotFoundException('Session not found or access denied');
+    }
+    return this.prisma.session.delete({
+      where: { id: sessionId },
+    });
   }
 }

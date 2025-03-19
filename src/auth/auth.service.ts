@@ -25,13 +25,27 @@ export class AuthService {
     return { message: 'User registered successfully' };
   }
 
-  async login(email: string, password: string) {
+  async login(email: string, password: string, ip: string) {
     const user = await this.prisma.user.findUnique({ where: { email } });
     if (!user || !(await bcrypt.compare(password, user.password))) {
       throw new UnauthorizedException('Invalid credentials');
+    }
+
+    const existingSession = await this.prisma.session.findFirst({
+      where: { userId: user.id, ip },
+    });
+
+    if (!existingSession) {
+      await this.prisma.session.create({
+        data: {
+          userId: user.id,
+          ip,
+        },
+      });
     }
 
     const token = this.jwtService.sign({ id: user.id, role: user.role });
     return { accessToken: token };
   }
 }
+
