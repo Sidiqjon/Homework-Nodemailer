@@ -6,6 +6,7 @@ import { ProductModule } from './product/product.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { MailModule } from './mail/mail.module';
 
 
 @Module({
@@ -13,7 +14,7 @@ import { ConfigModule } from '@nestjs/config';
     ConfigModule.forRoot({
     isGlobal: true, 
   }),
-    PrismaModule, CategoryModule, ProductModule, UserModule, AuthModule],
+    PrismaModule, CategoryModule, ProductModule, UserModule, AuthModule, MailModule],
   controllers: [],
   providers: [PrismaService],
 })

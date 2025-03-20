@@ -5,6 +5,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
 import { UserModule } from '../user/user.module';
 import { JwtAuthGuard } from '../guard/jwt-auth.guard';
+import { MailModule } from '../mail/mail.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { JwtAuthGuard } from '../guard/jwt-auth.guard';
       secret: process.env.JWT_SECRET || 'secret',
       signOptions: { expiresIn: '60m' },
     }),
+    MailModule,
   ],
   providers: [AuthService, PrismaService, JwtAuthGuard],
   controllers: [AuthController],
