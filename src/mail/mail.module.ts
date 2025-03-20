@@ -8,22 +8,15 @@ import { MailService } from './mail.service';
   imports: [
     MailerModule.forRoot({
       transport: {
-        host: 'smtp.example.com',
+        host: 'smtp.gmail.com',
         port: 587,
         auth: {
-          user: 'your-email@example.com',
-          pass: 'your-email-password',
+          user: 'sidiqjonyusufjanov7@gmail.com',
+          pass: 'dhwj ofzg kswh ybzf',
         },
       },
       defaults: {
         from: '"No Reply" <no-reply@example.com>',
-      },
-      template: {
-        dir: join(__dirname, 'templates'),
-        adapter: new HandlebarsAdapter(),
-        options: {
-          strict: true,
-        },
       },
     }),
   ],

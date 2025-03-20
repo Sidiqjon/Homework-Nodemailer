@@ -9,21 +9,16 @@ export class MailService {
     await this.mailerService.sendMail({
       to: email,
       subject: 'Your OTP Code',
-      template: './otp',
-      context: {
-        otp,
-      },
+      text: `Your OTP code is: ${otp}`,
     });
   }
 
   async sendNewLoginNotification(email: string, ip: string) {
+    
     await this.mailerService.sendMail({
       to: email,
       subject: 'New Login Detected',
-      template: './new-login',
-      context: {
-        ip,
-      },
+      text: `A new login has been detected from IP address: ${ip}`,
     });
   }
 }
