@@ -13,7 +13,8 @@ import { UserRole } from '../guard/role-enum';
 @Controller('categories')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
-
+  
+  @UseGuards(JwtAuthGuard)
   @Post()
   @Roles(UserRole.ADMIN)
   create(@Body() createCategoryDto: CreateCategoryDto) {
